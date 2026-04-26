@@ -133,10 +133,17 @@ export default function Admin() {
     }
   };
 
-  const handleEdit = (post) => {
-    setEditing(post.slug);
-    setForm({ title: post.title, slug: post.slug, excerpt: post.excerpt, content: '', category: post.category, tags: post.tags.join(', '), coverColor: post.coverColor, readingTime: post.readingTime, featured: post.featured });
-    window.scrollTo(0, 0);
+  const handleEdit = async (post) => {
+    try {
+      const res = await fetch(`${API_BASE}/posts/${post.slug}`);
+      if (!res.ok) throw new Error('Failed to fetch post');
+      const fullPost = await res.json();
+      setEditing(post.slug);
+      setForm({ title: fullPost.title, slug: fullPost.slug, excerpt: fullPost.excerpt, content: fullPost.content || '', category: fullPost.category, tags: fullPost.tags.join(', '), coverColor: fullPost.coverColor, readingTime: fullPost.readingTime, featured: fullPost.featured });
+      window.scrollTo(0, 0);
+    } catch (err) {
+      alert("Failed to load post content.");
+    }
   };
 
   const handleDelete = async (slug) => {
@@ -241,7 +248,7 @@ export default function Admin() {
 
         <div className="form-group">
           <label>Content (HTML) *</label>
-          <textarea value={form.content} onChange={e => handleChange('content', e.target.value)} placeholder="<h2>Your content here</h2><p>Write in HTML...</p>" style={{ minHeight: '250px', fontFamily: 'var(--font-mono)', fontSize: '0.85rem' }} required={!editing} />
+          <textarea value={form.content} onChange={e => handleChange('content', e.target.value)} placeholder="<h2 id=&quot;my-section&quot;>Your content here</h2><p>Write in HTML...</p>" style={{ minHeight: '250px', fontFamily: 'var(--font-mono)', fontSize: '0.85rem' }} required={!editing} />
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 'var(--space-md)' }}>

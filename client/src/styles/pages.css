@@ -491,6 +491,7 @@
   border: 1px solid rgba(124, 58, 237, 0.1);
   border-radius: var(--radius-lg);
   backdrop-filter: blur(12px);
+  height: 100%;
 }
 
 .form-group {

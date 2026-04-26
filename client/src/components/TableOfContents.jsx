@@ -19,24 +19,33 @@ export default function TableOfContents({ content }) {
   useEffect(() => {
     if (headings.length === 0) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            setActiveId(entry.target.id);
-          }
-        });
-      },
-      { rootMargin: '-80px 0px -60% 0px', threshold: 0.1 }
-    );
+    const handleScroll = () => {
+      const headingElements = headings.map(h => document.getElementById(h.id)).filter(Boolean);
+      const offset = 120; // Accounts for navbar and scroll-margin
+      let currentActiveId = '';
 
-    headings.forEach(h => {
-      const el = document.getElementById(h.id);
-      if (el) observer.observe(el);
-    });
+      for (const el of headingElements) {
+        const rect = el.getBoundingClientRect();
+        // If the heading is above the offset line (plus a small buffer), it is our active candidate
+        if (rect.top <= offset + 10) {
+          currentActiveId = el.id;
+        } else {
+          // Headings are in order, so we can stop checking once we find one below the offset line
+          break;
+        }
+      }
 
-    return () => observer.disconnect();
-  }, [headings]);
+      if (currentActiveId !== activeId) {
+        setActiveId(currentActiveId);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    // Trigger immediately to set initial state
+    handleScroll();
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [headings, activeId]);
 
   if (headings.length === 0) return null;
 
