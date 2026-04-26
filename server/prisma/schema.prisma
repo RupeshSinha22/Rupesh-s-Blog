@@ -37,3 +37,11 @@ model Contact {
 
   @@map("contacts")
 }
+
+model Subscriber {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  createdAt DateTime @default(now())
+
+  @@map("subscribers")
+}

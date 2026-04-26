@@ -142,11 +142,11 @@
 @media (max-width: 768px) {
   .header__menu-btn { display: flex; }
   .header__nav {
-    position: fixed;
-    top: 60px;
+    position: absolute;
+    top: 100%;
     left: 0;
     right: 0;
-    bottom: 0;
+    height: 100vh;
     flex-direction: column;
     background: var(--bg-primary);
     padding: var(--space-2xl);

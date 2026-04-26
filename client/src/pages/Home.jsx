@@ -72,6 +72,42 @@ export default function Home() {
   const [topicCount] = useCountUp(5, 1500, statsVisible);
   const [minuteCount] = useCountUp(52, 1500, statsVisible);
 
+  const [subscribeEmail, setSubscribeEmail] = useState('');
+  const [subscribeStatus, setSubscribeStatus] = useState(null); // 'idle', 'loading', 'success', 'error'
+  const [subscribeMessage, setSubscribeMessage] = useState('');
+
+  const handleSubscribe = async (e) => {
+    e.preventDefault();
+    if (!subscribeEmail) return;
+
+    setSubscribeStatus('loading');
+    try {
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: subscribeEmail })
+      });
+      
+      const data = await res.json();
+      if (res.ok) {
+        setSubscribeStatus('success');
+        setSubscribeMessage('Thanks for subscribing!');
+        setSubscribeEmail('');
+      } else {
+        setSubscribeStatus('error');
+        setSubscribeMessage(data.error || 'Failed to subscribe.');
+      }
+    } catch (err) {
+      setSubscribeStatus('error');
+      setSubscribeMessage('Something went wrong. Please try again.');
+    }
+    
+    setTimeout(() => {
+      setSubscribeStatus('idle');
+      setSubscribeMessage('');
+    }, 5000);
+  };
+
   useEffect(() => {
     fetch('/api/posts/featured')
       .then(r => r.json())
@@ -207,15 +243,34 @@ export default function Home() {
               <p className="newsletter__desc">
                 Get notified about new articles on web dev, system design, and engineering best practices.
               </p>
-              <form className="newsletter__form" onSubmit={(e) => e.preventDefault()}>
+              <form className="newsletter__form" onSubmit={handleSubscribe}>
                 <input
                   type="email"
                   className="newsletter__input"
                   placeholder="your@email.com"
                   id="newsletter-email"
+                  value={subscribeEmail}
+                  onChange={(e) => setSubscribeEmail(e.target.value)}
+                  disabled={subscribeStatus === 'loading'}
+                  required
                 />
-                <button type="submit" className="btn btn--primary">Subscribe</button>
+                <button 
+                  type="submit" 
+                  className="btn btn--primary" 
+                  disabled={subscribeStatus === 'loading'}
+                >
+                  {subscribeStatus === 'loading' ? 'Subscribing...' : 'Subscribe'}
+                </button>
               </form>
+              {subscribeMessage && (
+                <div style={{
+                  marginTop: '1rem',
+                  fontSize: '0.9rem',
+                  color: subscribeStatus === 'success' ? 'var(--aurora-emerald)' : '#ef4444'
+                }}>
+                  {subscribeMessage}
+                </div>
+              )}
             </div>
           </div>
         </ScrollReveal>

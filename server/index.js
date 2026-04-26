@@ -3,6 +3,7 @@ import cors from 'cors';
 import postsRouter from './routes/posts.js';
 import contactRouter from './routes/contact.js';
 import authRouter from './routes/auth.js';
+import subscribeRouter from './routes/subscribe.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use('/api/posts', postsRouter);
 app.use('/api/contact', contactRouter);
 app.use('/api/auth', authRouter);
+app.use('/api/subscribe', subscribeRouter);
 
 // Health check
 app.get('/api/health', (req, res) => {
