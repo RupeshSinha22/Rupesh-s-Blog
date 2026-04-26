@@ -59,7 +59,11 @@ export default function TableOfContents({ content }) {
           className={`toc__link ${activeId === h.id ? 'active' : ''}`}
           onClick={(e) => {
             e.preventDefault();
-            document.getElementById(h.id)?.scrollIntoView({ behavior: 'smooth' });
+            const element = document.getElementById(h.id);
+            if (element) {
+              const y = element.getBoundingClientRect().top + window.scrollY - 100;
+              window.scrollTo({ top: y, behavior: 'smooth' });
+            }
           }}
         >
           {h.text}
