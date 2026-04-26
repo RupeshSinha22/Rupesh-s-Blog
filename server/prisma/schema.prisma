@@ -1,0 +1,39 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Post {
+  id          Int      @id @default(autoincrement())
+  title       String
+  slug        String   @unique
+  excerpt     String
+  content     String
+  category    String
+  tags        String[] 
+  coverColor  String   @default("#7c3aed")
+  readingTime Int      @default(5)
+  featured    Boolean  @default(false)
+  published   Boolean  @default(true)
+  authorName  String   @default("Rupesh Kumar")
+  authorRole  String   @default("Full Stack Developer")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("posts")
+}
+
+model Contact {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  subject   String   @default("No subject")
+  message   String
+  createdAt DateTime @default(now())
+
+  @@map("contacts")
+}

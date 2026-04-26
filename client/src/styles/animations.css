@@ -1,0 +1,49 @@
+/* ANIMATIONS */
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideDown { from { opacity: 0; transform: translateY(-20px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+@keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 20px rgba(124,58,237,0.2); } 50% { box-shadow: 0 0 40px rgba(124,58,237,0.4); } }
+@keyframes gradient-shift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+@keyframes aurora-flow { 0% { transform: rotate(0deg) scale(1); } 33% { transform: rotate(120deg) scale(1.1); } 66% { transform: rotate(240deg) scale(0.95); } 100% { transform: rotate(360deg) scale(1); } }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.1s; }
+.stagger-3 { animation-delay: 0.15s; }
+.stagger-4 { animation-delay: 0.2s; }
+.stagger-5 { animation-delay: 0.25s; }
+.stagger-6 { animation-delay: 0.3s; }
+
+.page-enter { animation: fadeInUp 0.4s ease forwards; }
+
+.typewriter-cursor {
+  display: inline-block; width: 3px; height: 1em;
+  background: var(--aurora-teal); margin-left: 4px;
+  animation: blink 1s step-end infinite; vertical-align: text-bottom;
+}
+
+.gradient-text-animated {
+  background: linear-gradient(90deg, var(--aurora-purple), var(--aurora-teal), var(--aurora-pink), var(--aurora-purple));
+  background-size: 300% 100%;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; animation: gradient-shift 6s ease infinite;
+}
+
+.particles-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+
+.aurora-mesh { position: absolute; inset: 0; overflow: hidden; z-index: 0; }
+.aurora-mesh__blob { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.3; animation: aurora-flow 20s ease-in-out infinite; }
+.aurora-mesh__blob--1 { width: 600px; height: 600px; background: var(--aurora-purple); top: -20%; left: -10%; animation-duration: 18s; }
+.aurora-mesh__blob--2 { width: 500px; height: 500px; background: var(--aurora-teal); top: 10%; right: -10%; animation-duration: 22s; animation-delay: -5s; }
+.aurora-mesh__blob--3 { width: 400px; height: 400px; background: var(--aurora-pink); bottom: -10%; left: 30%; animation-duration: 25s; animation-delay: -10s; }
+
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  .reveal { opacity: 1; transform: none; }
+}

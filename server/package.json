@@ -1,0 +1,26 @@
+{
+  "name": "blog-server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "npx tsx index.js",
+    "dev": "npx tsx --watch index.js",
+    "seed": "npx tsx prisma/seed.js"
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.7.0",
+    "@prisma/client": "^7.7.0",
+    "@prisma/pg-worker": "^6.9.0",
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.4.2",
+    "express": "^5.1.0",
+    "nodemailer": "^8.0.6",
+    "pg": "^8.20.0",
+    "prisma": "^7.7.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.21.0"
+  }
+}
